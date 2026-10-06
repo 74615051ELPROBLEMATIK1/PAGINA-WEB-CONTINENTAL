@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ODS 4 – Educación de calidad</title>
+<style>
+:root{--bg:#fff;--fg:#1d2433;--mut:#5b6577;--card:#f4f6fa;--ac:#c5192d;box-sizing:border-box}
+@media(prefers-color-scheme:dark){:root{--bg:#12151c;--fg:#eef1f6;--mut:#a3adbf;--card:#1c212c}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+.stage{position:fixed;inset:0}
+.slide{position:absolute;inset:0;overflow-y:auto;padding:calc(env(safe-area-inset-top,0px) + 30px) 18px 100px;opacity:0;visibility:hidden;transform:translateX(80px) scale(.97);transition:opacity .6s,transform .6s,visibility .6s}
+.slide.before{transform:translateX(-80px) scale(.97)}
+.slide.active{opacity:1;visibility:visible;transform:none}
+.inner{max-width:1000px;margin:0 auto}
+.rv{opacity:0}.active .rv{animation:up .7s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0)*.12s + .25s)}
+.rr{opacity:0}.active .rr{animation:inr .8s cubic-bezier(.2,.8,.2,1) .35s both}
+@keyframes up{0%{opacity:0;transform:translateY(28px)}100%{opacity:1;transform:none}}
+@keyframes inr{0%{opacity:0;transform:translateX(60px) rotate(2deg)}100%{opacity:1;transform:none}}
+@keyframes flo{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.rv,.rr{opacity:1}}
+.cov{background:linear-gradient(135deg,#c5192d,#7d0c1c);color:#fff;text-align:center}
+.cov .inner{padding-top:10px}
+.bub{position:absolute;border-radius:50%;background:rgba(255,255,255,.08);animation:flo 7s ease-in-out infinite}
+.badge{display:inline-block;background:#fff;color:#c5192d;font-weight:800;border-radius:10px;padding:4px 16px;font-size:22px}
+.cov h1{font-size:clamp(26px,5vw,46px);margin:12px auto;max-width:880px;line-height:1.15}
+.course{opacity:.92;font-size:19px}
+.team{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:16px;max-width:900px;margin:26px auto 0}
+.m{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:15px}
+.av{width:96px;height:96px;border-radius:50%;background:rgba(255,255,255,.22);border:3px solid #fff;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;font-size:40px}
+.av img,.img img{width:100%;height:100%;object-fit:cover}
+.hd{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.tag{background:var(--ac);color:#fff;border-radius:8px;padding:2px 12px;font-weight:800}
+h2{font-size:clamp(24px,4vw,34px);margin:0;line-height:1.2}
+.topic{display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+@media(max-width:760px){.topic{grid-template-columns:1fr}}
+.lbl{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:16px 0 3px;font-weight:700}
+.ind{border-left:4px solid var(--ac);padding:6px 12px;background:var(--card);border-radius:0 10px 10px 0}
+.who{color:var(--mut);font-size:14px}
+.img{aspect-ratio:4/3;border-radius:18px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.ph{font-size:76px;animation:flo 5s ease-in-out infinite;color:#fff;text-align:center;line-height:1}
+.ph b{display:block;font-size:34px;opacity:.5;margin-top:6px}
+.up{display:none;position:absolute;bottom:8px;right:8px;z-index:2;background:rgba(0,0,0,.65);color:#fff;border:0;border-radius:8px;padding:6px 11px;font-size:13px;cursor:pointer}
+.can .up{display:block}
+.av .up{bottom:0;right:50%;transform:translateX(50%);font-size:11px;padding:2px 7px}
+.ed{outline:0;border-radius:4px}.ed:empty::before{content:attr(data-ph);opacity:.5}
+.can .ed{background:rgba(127,127,127,.14);padding:0 3px}.can .ed:focus{background:rgba(127,127,127,.3)}
+.nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;align-items:center;gap:14px;padding:12px 10px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,rgba(0,0,0,.35));z-index:5}
+.nav button{width:42px;height:42px;border-radius:50%;border:0;background:#fff;color:#c5192d;font-size:20px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.nav button.on{background:#c5192d;color:#fff}
+.dots{display:flex;gap:8px}
+.dots i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 0 0 1px rgba(0,0,0,.25);cursor:pointer;transition:.3s}
+.dots i.on{width:28px;border-radius:6px;background:#c5192d;box-shadow:0 0 0 1px #fff}
+.prog{position:fixed;top:0;left:0;height:4px;background:var(--ac);z-index:6;transition:width .6s}
+.toast{position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 14px;border-radius:12px;z-index:9;font-size:14px;display:none}
+.toast.on{display:block}
+.big{font-size:19px;line-height:1.7;margin-top:14px}
+</style></head>
+<body>
+<div id="app"></div><div class="toast" id="toast"></div>
+<script type="application/json" id="data">{
+"title":"Objetivo de Desarrollo Sostenible 4: Educación de calidad",
+"course":"HERRAMIENTAS Y ESTRATEGIAS DIGITALES",
+"extra":"Profesor/a · Fecha · Institución",
+"members":[{"name":"Integrante 1"},{"name":"Integrante 2"},{"name":"Integrante 3"},{"name":"Integrante 4"},{"name":"Integrante 5"},{"name":"Integrante 6"}],
+"topics":[
+{"tag":"4.1","icon":"📚","c":["#e5243b","#a3101f"],"title":"Educación primaria y secundaria de calidad","who":"Integrante 1","desc":"Asegurar que todas las niñas y niños terminen la enseñanza primaria y secundaria, gratuita, equitativa y de calidad.","ind":"4.1.1 Proporción de niños y jóvenes que alcanzan al menos un nivel mínimo de competencia en lectura y matemáticas.","dato":""},
+{"tag":"4.2","icon":"🧸","c":["#dda63a","#b07612"],"title":"Primera infancia y educación preescolar","who":"Integrante 2","desc":"Garantizar el acceso a servicios de atención, desarrollo y enseñanza preescolar de calidad para que niñas y niños estén listos para la primaria.","ind":"4.2.2 Tasa de participación en la enseñanza organizada un año antes de la edad oficial de ingreso en la primaria.","dato":""},
+{"tag":"4.3","icon":"🎓","c":["#4c9f38","#2c6b1f"],"title":"Educación técnica, profesional y superior","who":"Integrante 3","desc":"Asegurar el acceso igualitario de mujeres y hombres a formación técnica, profesional y universitaria asequible y de calidad.","ind":"4.3.1 Tasa de participación de jóvenes y adultos en la educación y formación formal y no formal en los últimos 12 meses.","dato":""},
+{"tag":"4.4","icon":"💻","c":["#0a97d9","#06638f"],"title":"Competencias para el empleo y el emprendimiento","who":"Integrante 4","desc":"Aumentar el número de jóvenes y adultos con competencias técnicas y profesionales para acceder al empleo, al trabajo decente y al emprendimiento.","ind":"4.4.1 Proporción de jóvenes y adultos con conocimientos de tecnología de la información y las comunicaciones (TIC), por tipo de conocimiento técnico.","dato":""},
+{"tag":"4.5","icon":"🤝","c":["#ff3a21","#b8220f"],"title":"Igualdad de género e inclusión","who":"Integrante 5","desc":"Eliminar las disparidades de género en la educación y asegurar el acceso igualitario de personas vulnerables, con discapacidad y pueblos indígenas.","ind":"4.5.1 Índices de paridad (mujer/hombre, rural/urbano, quintil de riqueza, etc.) para todos los indicadores de educación.","dato":""},
+{"tag":"4.c","icon":"👩‍🏫","c":["#26bde2","#127c9c"],"title":"Docentes calificados","who":"Integrante 6","desc":"Aumentar la oferta de docentes calificados, con formación y cooperación internacional, sobre todo en países en desarrollo.","ind":"4.c.1 Proporción de docentes con las calificaciones mínimas requeridas, por nivel educativo.","dato":""}
+],
+"concl":""}</script>
+<script>
+const KEY='ods4-v1';let D=JSON.parse(document.getElementById('data').textContent);
+try{const s=localStorage.getItem(KEY);if(s)D=JSON.parse(s)}catch(e){}
+const $=(s,r=document)=>r.querySelector(s),esc=t=>String(t||'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const ed=(f,ph,v,tag='span')=>`<${tag} class="ed" data-f="${f}" data-ph="${ph}">${esc(v)}</${tag}>`;
+function render(){
+ let h=`<div class="prog" id="pg"></div><div class="stage" id="st">`;
+ h+=`<section class="slide cov"><div class="bub" style="left:60%;top:-40%;width:200px;height:200px"></div><div class="bub" style="left:75%;top:55%;width:120px;height:120px;animation-delay:1s"></div><div class="bub" style="left:10%;top:70%;width:90px;height:90px;animation-delay:2s"></div>
+ <div class="inner" style="position:relative"><span class="badge rv">ODS 4</span><h1 class="rv" style="--i:1">${ed('title','Título del trabajo',D.title)}</h1>
+ <div class="course rv" style="--i:2">${ed('course','Nombre del curso',D.course)}</div>
+ <div class="course rv" style="--i:3;font-size:15px">${ed('extra','Profesor/a · Fecha · Institución',D.extra)}</div>
+ <div class="team">${D.members.map((m,i)=>`<div class="m"><div class="av">${m.img?`<img src="${m.img}" alt="">`:'👤'}<button class="up" data-up="members.${i}.img">📷</button></div><b>${ed(`members.${i}.name`,'Nombre',m.name)}</b></div>`).join('')}</div></div></section>`;
+ D.topics.forEach((t,i)=>{const p=`topics.${i}.`;
+ h+=`<section class="slide"><div class="inner topic"><div>
+ <div class="hd rv"><span class="tag">Meta ${esc(t.tag)}</span></div>
+ <h2 class="rv" style="--i:1">${ed(p+'title','Título del tema',t.title)}</h2>
+ <div class="who rv" style="--i:2">Expone: ${ed(p+'who','Nombre',t.who)}</div>
+ <div class="lbl rv" style="--i:3">Qué busca la meta</div><div class="rv" style="--i:3">${ed(p+'desc','Descripción',t.desc,'div')}</div>
+ <div class="lbl rv" style="--i:4">Indicador oficial</div><div class="ind rv" style="--i:4">${ed(p+'ind','Indicador',t.ind,'div')}</div>
+ <div class="lbl rv" style="--i:5">Dato clave y fuente</div><div class="rv" style="--i:5">${ed(p+'dato','Cifra o dato con su fuente…',t.dato,'div')}</div>
+ </div><div class="img rr" style="background:linear-gradient(135deg,${t.c[0]},${t.c[1]})">${t.img?`<img src="${t.img}" alt="">`:`<div class="ph">${t.icon}<b>${esc(t.tag)}</b></div>`}<button class="up" data-up="${p}img">📷</button></div></div></section>`});
+ h+=`<section class="slide"><div class="inner"><h2 class="rv">Conclusiones</h2><div class="big rv" style="--i:1">${ed('concl','Conclusiones del grupo…',D.concl,'div')}</div></div></section></div>
+ <div class="nav"><button id="pv" aria-label="Anterior">‹</button><div class="dots">${D.topics.concat([0,0]).map((_,i)=>`<i data-d="${i}"></i>`).join('')}</div><button id="nx" aria-label="Siguiente">›</button><button id="eb" title="Activar edición">✏️</button><button id="dl" title="Descargar copia">⬇</button></div>`;
+ $('#app').innerHTML=h;
+ const n=D.topics.length+2;$('#app').classList.toggle('can',editing);
+ $('#app').querySelectorAll('.ed').forEach(e=>e.contentEditable=editing);
+ $('#eb').classList.toggle('on',editing);go(cur,true);
+}
+let cur=0,editing=false;
+function go(i,keep){const s=document.querySelectorAll('.slide'),n=s.length;cur=Math.max(0,Math.min(n-1,i));
+ s.forEach((e,k)=>{e.classList.toggle('active',k==cur);e.classList.toggle('before',k<cur)});
+ document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k==cur));
+ $('#pg').style.width=((cur+1)/n*100)+'%'}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
+function setPath(p,v){const k=p.split('.');let o=D;for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D));toast('Cambios guardados en este navegador')}catch(e){toast('No se pudo guardar; usa ⬇ para descargar')}}
+function shrink(file,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const m=800,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.8))};im.src=r.result};r.readAsDataURL(file)}
+document.addEventListener('click',e=>{
+ const t=e.target;
+ if(t.closest('#pv'))go(cur-1);else if(t.closest('#nx'))go(cur+1);
+ else if(t.closest('.dots i'))go(+t.dataset.d);
+ else if(t.closest('#eb')){editing=!editing;render();toast(editing?'Edición activada: haz clic en cualquier texto':'Edición desactivada')}
+ else if(t.closest('#dl'))download();
+ else if(t.dataset.up){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.onchange=()=>inp.files[0]&&shrink(inp.files[0],u=>{setPath(t.dataset.up,u);render();save()});inp.click()}
+});
+document.addEventListener('focusout',e=>{const t=e.target;if(t.dataset&&t.dataset.f){const v=t.innerText.replace(/\n$/,'');setPath(t.dataset.f,v);save()}});
+document.addEventListener('keydown',e=>{if(editing&&e.target.isContentEditable)return;if(e.key=='ArrowRight')go(cur+1);if(e.key=='ArrowLeft')go(cur-1)});
+let DL=null;
+async function download(){
+ const c=document.documentElement.cloneNode(true);c.querySelector('#app').innerHTML='';c.querySelector('#toast').className='toast';
+ c.querySelector('#data').textContent=JSON.stringify(D).replace(/</g,'\\u003c');
+ const html='<!DOCTYPE html>\n'+c.outerHTML;
+ if(!DL){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download='ODS4_Educacion_de_calidad.html';a.click();return toast('Copia descargada con tus cambios')}
+ try{await DL.save({filename:'ODS4_Educacion_de_calidad.html',data:html});toast('Copia lista con tus cambios')}catch(e){if(!e||e.code!=='declined')toast('No se pudo descargar')}}
+try{window.claude&&claude.use('downloads').then(d=>{DL=d;})}catch(e){}
+render();
+</script></body></html>
